@@ -1,0 +1,189 @@
+#root {
+  width: 95%;
+  margin: 0px auto;
+}
+
+// main 
+
+header {
+  h1 {
+    margin-top: 0px;
+
+    @media (max-width: 400px) {
+      font-size: x-large;
+      margin-top: -30px;
+    }
+  }
+}
+
+main {
+  .addNew {
+    form {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+
+      input {
+        width: 85%;
+        line-height: 30px;
+        border-radius: 10px;
+        border: 1px solid black;
+        padding: 5px 10px;
+        font-size: medium;
+
+        @media (max-width: 400px) {
+          font-size: small;
+        }
+      }
+
+      button {
+        width: fit-content;
+        background-color: rgb(53, 92, 168);
+        color: white;
+        padding: 5px auto;
+        display: flex;
+        justify-content: space-between;
+        transition: background-color 0.3s ease;
+
+        @media (max-width: 400px) {
+          font-size: small;
+          line-height: 25px;
+        }
+
+        img {
+          width: 15px;
+          height: 15px;
+          margin: 2px 15px auto auto;
+
+          @media (max-width: 400px) {
+            width: 10px;
+            height: 10px;
+            margin: 7px 10px auto auto;
+          }
+        }
+      }
+
+      button:hover {
+        background-color: rgb(12, 31, 68);
+      }
+    }
+  }
+
+  .taskGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    // justify-content: space-between;
+    transition: transform 0.3s ease;
+
+    @media (max-width: 400px) {
+      font-size: small;
+      gap: 5px;
+    }
+  }
+
+  .closingSection {
+    overflow: hidden;
+    transition: max-height 0.4s ease, opacity 0.4s ease;
+    max-height: fit-content;
+  }
+
+  .closingSection.hide {
+    max-height: 0;
+    opacity: 0;
+  }
+
+  .closingSection.show {
+    max-height: 1000px;
+    opacity: 1;
+  }
+
+  .todoTaskItem,
+  .doneTaskItem {
+    display: flex;
+    flex: 0 0 calc((100% - 40px) / 3);
+    box-sizing: border-box;
+    border: 1px solid rgba(120, 120, 120, 0.542);
+    border-radius: 10px;
+    width: fit-content;
+    padding: 15px 20px;
+    align-items: flex-start;
+
+    input {
+      margin: 10px 20px auto 0;
+    }
+
+    @media (max-width: 600px) {
+      flex: 0 0 100%;
+      width: 95%;
+      margin: 10px auto;
+    }
+  }
+
+  .completed {
+    background-color: rgba(235, 235, 235, 0.274);
+    box-sizing: border-box;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    padding: 5px 20px 20px 20px;
+    border-radius: 20px;
+
+    .heading {
+      display: flex;
+      justify-content: space-between;
+
+      @media (max-width: 400px) {
+        font-size: large;
+        display: block;
+      }
+
+      div {
+        button {
+          margin-top: 15px;
+          border: 1px solid rgba(120, 120, 120, 0.542);
+          transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+          background-color: rgba(120, 120, 120, 0.542);
+          color: white;
+        }
+
+        @media (max-width: 400px) {
+          font-size: small;
+          display: flex;
+          justify-content: space-between;
+          margin: -5px auto 20px auto ;
+        }
+
+        button:nth-child(2) {
+          border: none;
+          background-color: transparent;
+        }
+      }
+
+      img {
+        margin-bottom: -5px;
+        width: 20px;
+        height: 20px;
+
+        @media (max-width: 400px) {
+          width: 10px;
+          height: 10px;
+        }
+      }
+    }
+  }
+
+  section {
+    h2 {
+      @media (max-width: 400px) {
+        font-size: large;
+      }
+    }
+  }
+
+  button:focus {
+    outline: none;
+  }
+}
