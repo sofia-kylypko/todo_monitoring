@@ -9,8 +9,8 @@ import type { Todo } from './types/Todo.ts'
 
 // default start tasks
 const initTodos: Todo[] = [
-  { id: 1, desc: 'Buy milk', completed: false, date: new Date('2004-10-12') },
-  { id: 2, desc: 'Buy water', completed: true, date: new Date('2004-10-12') }
+  { id: 1, desc: 'Buy milk', completed: false, date: new Date() },
+  { id: 2, desc: 'Buy water', completed: true, date: new Date() }
 ];
 
 function App() {
@@ -31,7 +31,7 @@ function App() {
       />
       <div>
         <div>{el.desc}</div>
-        <div>{el.date.getDay()}/{el.date.getMonth()}/{el.date.getFullYear()}</div>
+        <div>{el.date.getDate()}/{el.date.getMonth()+1}/{el.date.getFullYear()}</div>
       </div>
     </div>
   ))
@@ -45,7 +45,7 @@ function App() {
       />
       <div>
         <div>{el.desc}</div>
-        <div>{el.date.getDay()}/{el.date.getMonth()}/{el.date.getFullYear()}</div>
+        <div>{el.date.getDate()}/{el.date.getMonth()+1}/{el.date.getFullYear()}</div>
       </div>
     </div>
   ))
