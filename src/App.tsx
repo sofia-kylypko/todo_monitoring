@@ -7,6 +7,7 @@ import plusIcon from './assets/plus.png'
 import arrowIcon from './assets/arrow.png'
 import type { Todo } from './types/Todo.ts'
 
+// default start tasks
 const initTodos: Todo[] = [
   { id: 1, desc: 'Buy milk', completed: false, date: new Date('2004-10-12') },
   { id: 2, desc: 'Buy water', completed: true, date: new Date('2004-10-12') }
@@ -15,9 +16,12 @@ const initTodos: Todo[] = [
 function App() {
   console.log("render")
 
+  // state of closing/opening of a done tasks section
   const [state, setState] = useState({ rotation: 0, visible: true });
+  // state of task list done/todo task monitoring
   const [taskList, setTaskList] = useState<Todo[]>(initTodos);
 
+  // done tasks objects
   const doneTasks = taskList.filter(el => el.completed).map(el => (
     <div className='doneTaskItem' key={el.id}>
       <input
@@ -27,11 +31,12 @@ function App() {
       />
       <div>
         <div>{el.desc}</div>
-        <div>{el.date.toString()}</div>
+        <div>{el.date.getDay()}/{el.date.getMonth()}/{el.date.getFullYear()}</div>
       </div>
     </div>
   ))
 
+  // todo tasks objects
   const todoTasks = taskList.filter(el => !el.completed).map(el => (
     <div className='todoTaskItem' key={el.id}>
       <input
@@ -40,11 +45,12 @@ function App() {
       />
       <div>
         <div>{el.desc}</div>
-        <div>{el.date.toString()}</div>
+        <div>{el.date.getDay()}/{el.date.getMonth()}/{el.date.getFullYear()}</div>
       </div>
     </div>
   ))
 
+  // to toggle section and rotate an icon
   const toggleSection = () => {
     setState((prev) => ({
       rotation: prev.rotation + 180,
@@ -52,15 +58,19 @@ function App() {
     }));
   };
 
+  // form submition method
   const addTask = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    // get data from form
     const formData = new FormData(e.currentTarget);
     const taskText = formData.get("input") as string;
 
     console.log(taskText);
 
+    // check if there us input
     if (taskText) {
+      // create todo object
       const newTodo: Todo = {
         id: Date.now(),
         desc: taskText,
@@ -69,26 +79,31 @@ function App() {
       };
       console.log(newTodo);
 
+      // update list
       setTaskList(prevList => [...prevList, newTodo]);
 
+      // clear form
       e.currentTarget.reset();
     } else {
       alert("Needed text for new task")
     }
   }
 
+  // change status of selected task and update a list
   const markTaskDone = (taskId: number) => {
     setTaskList(prevList => prevList.map(el =>
       el.id === taskId ? { ...el, completed: true } : el
     ));
   };
 
+  // change status of selected task and update a list
   const markTaskTodo = (taskId: number) => {
     setTaskList(prevList => prevList.map(el =>
       el.id === taskId ? { ...el, completed: false } : el
     ));
   };
 
+  // update list by removing tasks with completed status
   const clearCompletedTasks = () => {
     setTaskList(prevList => prevList.filter(el => !el.completed));
   }
