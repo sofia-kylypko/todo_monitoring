@@ -1,25 +1,43 @@
-import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
 import './styles/App.scss'
-// import library from './components/library'
 import plusIcon from './assets/plus.png'
 import arrowIcon from './assets/arrow.png'
-import type { Todo } from './types/Todo.ts'
+import { useAppDispatch, useAppSelector } from './app/hooks.ts'
+import { toggleSection } from './app/elements/toggle.ts'
+import { addTask, markTaskDone, markTaskTodo, clearCompletedTasks } from './app/elements/list.ts'
 
-// default start tasks
-const initTodos: Todo[] = [
-  { id: 1, desc: 'Buy milk', completed: false, date: new Date('2004-10-12') },
-  { id: 2, desc: 'Buy water', completed: true, date: new Date('2004-10-12') }
-];
 
 function App() {
   console.log("render")
 
-  // state of closing/opening of a done tasks section
-  const [state, setState] = useState({ rotation: 0, visible: true });
-  // state of task list done/todo task monitoring
-  const [taskList, setTaskList] = useState<Todo[]>(initTodos);
+  const dispatch = useAppDispatch()
+  const { rotation, visible } = useAppSelector((state) => state.toggle)
+  const taskList = useAppSelector((state) => state.list)
+
+  const handleAddTask = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const formData = new FormData(e.currentTarget)
+    const taskText = formData.get('input') as string
+    if (taskText) {
+      dispatch(addTask(taskText))
+      e.currentTarget.reset()
+    } else {
+      alert('Needed text for new task')
+    }
+  }
+
+  // todo tasks objects
+  const todoTasks = taskList.filter(el => !el.completed).map(el => (
+    <div className='todoTaskItem' key={el.id}>
+      <input
+        type="checkbox"
+        onChange={() => dispatch(markTaskDone(el.id))}
+      />
+      <div>
+        <div>{el.desc}</div>
+        <div>{new Date(el.date).getDate()}/{new Date(el.date).getMonth() + 1}/{new Date(el.date).getFullYear()}</div>
+      </div>
+    </div>
+  ))
 
   // done tasks objects
   const doneTasks = taskList.filter(el => el.completed).map(el => (
@@ -27,86 +45,14 @@ function App() {
       <input
         type="checkbox"
         defaultChecked
-        onChange={() => markTaskTodo(el.id)}
+        onChange={() => dispatch(markTaskTodo(el.id))}
       />
       <div>
         <div>{el.desc}</div>
-        <div>{el.date.getDay()}/{el.date.getMonth()}/{el.date.getFullYear()}</div>
+        <div>{new Date(el.date).getDate()}/{new Date(el.date).getMonth() + 1}/{new Date(el.date).getFullYear()}</div>
       </div>
     </div>
   ))
-
-  // todo tasks objects
-  const todoTasks = taskList.filter(el => !el.completed).map(el => (
-    <div className='todoTaskItem' key={el.id}>
-      <input
-        type="checkbox"
-        onChange={() => markTaskDone(el.id)}
-      />
-      <div>
-        <div>{el.desc}</div>
-        <div>{el.date.getDay()}/{el.date.getMonth()}/{el.date.getFullYear()}</div>
-      </div>
-    </div>
-  ))
-
-  // to toggle section and rotate an icon
-  const toggleSection = () => {
-    setState((prev) => ({
-      rotation: prev.rotation + 180,
-      visible: !prev.visible
-    }));
-  };
-
-  // form submition method
-  const addTask = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    // get data from form
-    const formData = new FormData(e.currentTarget);
-    const taskText = formData.get("input") as string;
-
-    console.log(taskText);
-
-    // check if there us input
-    if (taskText) {
-      // create todo object
-      const newTodo: Todo = {
-        id: Date.now(),
-        desc: taskText,
-        completed: false,
-        date: new Date()
-      };
-      console.log(newTodo);
-
-      // update list
-      setTaskList(prevList => [...prevList, newTodo]);
-
-      // clear form
-      e.currentTarget.reset();
-    } else {
-      alert("Needed text for new task")
-    }
-  }
-
-  // change status of selected task and update a list
-  const markTaskDone = (taskId: number) => {
-    setTaskList(prevList => prevList.map(el =>
-      el.id === taskId ? { ...el, completed: true } : el
-    ));
-  };
-
-  // change status of selected task and update a list
-  const markTaskTodo = (taskId: number) => {
-    setTaskList(prevList => prevList.map(el =>
-      el.id === taskId ? { ...el, completed: false } : el
-    ));
-  };
-
-  // update list by removing tasks with completed status
-  const clearCompletedTasks = () => {
-    setTaskList(prevList => prevList.filter(el => !el.completed));
-  }
 
   return (
     <>
@@ -116,7 +62,7 @@ function App() {
 
       <main>
         <section className="addNew">
-          <form onSubmit={addTask}>
+          <form onSubmit={handleAddTask}>
             <input name='input' type='text' placeholder='Add a new task...'></input>
             <button>
               <img src={plusIcon} alt='icon' />
@@ -136,17 +82,25 @@ function App() {
           <div className='heading'>
             <h2>Recently completed tasks</h2>
             <div>
-              <button onClick={clearCompletedTasks}>Clear all</button>
-              <button><img src={arrowIcon} onClick={toggleSection} style={{
-                transform: `rotate(${state.rotation}deg)`,
-                transition: "transform 0.3s ease"
-              }} /></button>
+              <button onClick={() => dispatch(clearCompletedTasks())}>Clear all</button>
+              <button onClick={() => dispatch(toggleSection())}>
+                <img
+                  src={arrowIcon}
+                  style={{
+                    transform: `rotate(${rotation}deg)`,
+                    transition: 'transform 0.3s ease',
+                  }}
+                />
+              </button>
             </div>
+          </div>
 
-          </div>
-          <div className={`closingSection taskGrid ${state.visible ? "show" : "hide"}`}>
-            {doneTasks}
-          </div>
+          {/* only show if visible */}
+          {visible && (
+            <div className="closingSection taskGrid">
+              {doneTasks}
+            </div>
+          )}
         </section>
       </main>
     </>
