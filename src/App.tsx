@@ -9,16 +9,22 @@ import { addTask, markTaskDone, markTaskTodo, clearCompletedTasks } from './app/
 function App() {
   console.log("render")
 
+  // to send actions request to redux state
   const dispatch = useAppDispatch()
+  // take variables from redux state
   const { rotation, visible } = useAppSelector((state) => state.toggle)
   const taskList = useAppSelector((state) => state.list)
 
+  //  add ew task function
   const handleAddTask = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    // get data from form 
     const formData = new FormData(e.currentTarget)
     const taskText = formData.get('input') as string
     if (taskText) {
+      // send action request to redux states objects
       dispatch(addTask(taskText))
+      // clear form
       e.currentTarget.reset()
     } else {
       alert('Needed text for new task')

@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import type { Todo } from '../../types/Todo'
 
+// initial state object
 const initTodos: Todo[] = [
   { id: 1, desc: 'Buy milk', completed: false, date: new Date('2004-10-12').toISOString() },
   { id: 2, desc: 'Buy water', completed: true, date: new Date('2004-10-12').toISOString() }
@@ -9,7 +10,9 @@ const initTodos: Todo[] = [
 
 const tasksSlice = createSlice({
   name: 'tasks',
+//   assign initial state
   initialState: initTodos,
+//   action holder
   reducers: {
     addTask: (state, action: PayloadAction<string>) => {
       const newTodo: Todo = {
