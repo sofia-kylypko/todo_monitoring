@@ -5,7 +5,6 @@ import { useAppDispatch, useAppSelector } from './app/hooks.ts'
 import { toggleSection } from './app/elements/toggle.ts'
 import { addTask, markTaskDone, markTaskTodo, clearCompletedTasks } from './app/elements/list.ts'
 
-
 function App() {
   console.log("render")
 
@@ -41,6 +40,7 @@ function App() {
       <div>
         <div>{el.desc}</div>
         <div>{new Date(el.date).getDate()}/{new Date(el.date).getMonth() + 1}/{new Date(el.date).getFullYear()}</div>
+
       </div>
     </div>
   ))
