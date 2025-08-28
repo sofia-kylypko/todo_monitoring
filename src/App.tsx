@@ -7,6 +7,14 @@ import { addTask, markTaskDone, markTaskTodo, clearCompletedTasks } from './app/
 
 function App() {
   console.log("render")
+  console.log(document.cookie);
+
+  const stored = localStorage.getItem(document.cookie);
+  console.log(stored)
+
+  if (stored) {
+    console.log(JSON.parse(stored));
+  }
 
   // to send actions request to redux state
   const dispatch = useAppDispatch()
