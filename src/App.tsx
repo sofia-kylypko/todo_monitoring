@@ -7,6 +7,7 @@ import { addTask, markTaskDone, markTaskTodo, clearCompletedTasks } from './app/
 
 function App() {
   console.log("render")
+  console.log(document.cookie);
 
   // to send actions request to redux state
   const dispatch = useAppDispatch()
