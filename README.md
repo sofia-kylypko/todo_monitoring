@@ -1,69 +1,32 @@
-# React + TypeScript + Vite
+<h1>Project Description – Todo App</h1>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<p>This project is a Todo List application built with React and TypeScript, designed to provide users with a simple yet powerful way to manage daily tasks</p>
 
-Currently, two official plugins are available:
+<h3>Key Features</h3>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+<ul>
+  <li>Task Management: Add, edit, mark as completed, and delete todos.</li>
+  <li>Uses localStorage to store todos locally so that tasks remain saved between browser sessions.</li>
+  <li>Uses cookies, ensuring each user has their own personal task list without needing registration</li>
+  <li>Uses Redux toolikt to handle task state updates and synchronization with storage</li>
+</ul>
 
-## Expanding the ESLint configuration
+<h3>Technologies Used</h3>
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+<ul>
+  <li>React</li>
+  <li>TypeScript</li>
+  <li>Redux</li>
+  <li>localStorage x Cookies</li>
+</ul>
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+<h3>How It Works</h3>
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+When a new user visits the app, a unique cookie-based ID is generated.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+A storage key (list_<user_id>) is created in localStorage to save that user’s tasks.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+All task operations (add, mark done, unmark, clear completed) are synchronized to localStorage in real time.
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+On returning to the app, the user’s cookie ensures their personal todo list is retrieved automatically.
